@@ -7,7 +7,8 @@ import { getSessionCookieName, verifySessionCookie } from "@/lib/session";
 export async function GET(request) {
   const { searchParams } = new URL(request.url);
   const projectId = searchParams.get("projectId");
-  const sessionCookie = cookies().get(getSessionCookieName())?.value;
+  const cookieStore = await cookies();
+  const sessionCookie = cookieStore.get(getSessionCookieName())?.value;
   const decoded = await verifySessionCookie(sessionCookie);
   if (!decoded)
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -29,7 +30,8 @@ export async function GET(request) {
 
 // POST: create task
 export async function POST(request) {
-  const sessionCookie = cookies().get(getSessionCookieName())?.value;
+  const cookieStore = await cookies();
+  const sessionCookie = cookieStore.get(getSessionCookieName())?.value;
   const decoded = await verifySessionCookie(sessionCookie);
   if (!decoded)
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -62,7 +64,8 @@ export async function POST(request) {
 
 // PUT: update task
 export async function PUT(request) {
-  const sessionCookie = cookies().get(getSessionCookieName())?.value;
+  const cookieStore = await cookies();
+  const sessionCookie = cookieStore.get(getSessionCookieName())?.value;
   const decoded = await verifySessionCookie(sessionCookie);
   if (!decoded)
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -94,7 +97,8 @@ export async function DELETE(request) {
   const { searchParams } = new URL(request.url);
   const projectId = searchParams.get("projectId");
   const taskId = searchParams.get("taskId");
-  const sessionCookie = cookies().get(getSessionCookieName())?.value;
+  const cookieStore = await cookies();
+  const sessionCookie = cookieStore.get(getSessionCookieName())?.value;
   const decoded = await verifySessionCookie(sessionCookie);
   if (!decoded)
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });

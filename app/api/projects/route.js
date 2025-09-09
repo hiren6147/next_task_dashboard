@@ -4,7 +4,8 @@ import { adminDb } from "@/lib/firebaseAdmin";
 import { getSessionCookieName, verifySessionCookie } from "@/lib/session";
 
 export async function GET() {
-  const sessionCookie = cookies().get(getSessionCookieName())?.value;
+  const cookieStore = await cookies();
+  const sessionCookie = cookieStore.get(getSessionCookieName())?.value;
   const decoded = await verifySessionCookie(sessionCookie);
   if (!decoded)
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -19,7 +20,8 @@ export async function GET() {
 }
 
 export async function POST(request) {
-  const sessionCookie = cookies().get(getSessionCookieName())?.value;
+  const cookieStore = await cookies();
+  const sessionCookie = cookieStore.get(getSessionCookieName())?.value;
   const decoded = await verifySessionCookie(sessionCookie);
   if (!decoded)
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -42,7 +44,8 @@ export async function POST(request) {
 }
 
 export async function DELETE(request) {
-  const sessionCookie = cookies().get(getSessionCookieName())?.value;
+  const cookieStore = await cookies();
+  const sessionCookie = cookieStore.get(getSessionCookieName())?.value;
   const decoded = await verifySessionCookie(sessionCookie);
   if (!decoded)
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });

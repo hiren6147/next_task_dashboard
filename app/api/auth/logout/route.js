@@ -3,7 +3,8 @@ import { cookies } from "next/headers";
 import { getSessionCookieName } from "@/lib/session";
 
 export async function POST() {
-  cookies().set({
+  const cookieStore = await cookies();
+  cookieStore.set({
     name: getSessionCookieName(),
     value: "",
     httpOnly: true,

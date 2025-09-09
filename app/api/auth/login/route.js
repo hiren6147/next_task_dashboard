@@ -84,7 +84,8 @@ export async function POST(request) {
       );
     }
 
-    cookies().set({
+    const cookieStore = await cookies();
+    cookieStore.set({
       name: getSessionCookieName(),
       value: sessionCookie,
       httpOnly: true,

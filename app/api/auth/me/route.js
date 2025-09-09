@@ -4,7 +4,7 @@ import { getSessionCookieName, verifySessionCookie } from "@/lib/session";
 import { adminAuth } from "@/lib/firebaseAdmin";
 
 export async function GET() {
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
   const sessionCookie = cookieStore.get(getSessionCookieName())?.value;
   const decoded = await verifySessionCookie(sessionCookie);
   if (!decoded) {
