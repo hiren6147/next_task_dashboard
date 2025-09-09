@@ -19,6 +19,8 @@ import {
   Divider,
   Skeleton,
   CircularProgress,
+  Chip,
+  Tooltip,
 } from "@mui/material";
 import { Delete as DeleteIcon } from "@mui/icons-material";
 import Header from "./components/Header";
@@ -78,9 +80,9 @@ export default function DashboardPage() {
 
   const [projectName, setProjectName] = useState("");
   const [projectDesc, setProjectDesc] = useState("");
-  const [openProjectDialog, setOpenProjectDialog] = useState(false);
   const [selectedProject, setSelectedProject] = useState(null);
   const [projectNameError, setProjectNameError] = useState("");
+  const selectedProjectId = selectedProject?.id ?? null;
 
   useEffect(() => {
     (async () => {
@@ -112,7 +114,6 @@ export default function DashboardPage() {
     setProjectName("");
     setProjectDesc("");
     setProjectNameError("");
-    setOpenProjectDialog(false);
   };
 
   const handleDeleteProject = async (projectId) => {
@@ -147,12 +148,12 @@ export default function DashboardPage() {
   return (
     <Box>
       <Header />
-      <Container maxWidth="lg" sx={{ py: 4 }}>
+      <Container maxWidth="lg" sx={{ py: { xs: 2, md: 4 } }}>
         {/* Create Project Section */}
         <Card sx={{ mb: 4 }}>
           <CardHeader
-            title="Create Project"
-            subheader="Start a new workspace"
+            title="Start a new workspace"
+            subheader="Create a project to organize your tasks"
           />
           <CardContent>
             <Box component="form" onSubmit={handleCreateProject}>
@@ -184,7 +185,7 @@ export default function DashboardPage() {
                     type="submit"
                     variant="contained"
                     fullWidth
-                    sx={{ height: "100%" }}
+                    sx={{ height: { xs: 40, md: "100%" } }}
                     disabled={createLoading}
                   >
                     {createLoading ? <CircularProgress size={20} /> : "Create"}
@@ -223,34 +224,58 @@ export default function DashboardPage() {
                     height: "100%",
                     display: "flex",
                     flexDirection: "column",
+                    transition: (theme) =>
+                      theme.transitions.create(["transform", "box-shadow"], {
+                        duration: 200,
+                      }),
+                    "&:hover": {
+                      transform: { md: "translateY(-2px)" },
+                      boxShadow: 6,
+                    },
                   }}
                 >
                   <CardHeader
                     title={project.name}
                     subheader={project.description}
                     action={
-                      <Box sx={{ display: "flex", gap: 1 }}>
-                        <Button
-                          size="small"
-                          variant={
-                            selectedProject?.id === project.id
-                              ? "contained"
-                              : "outlined"
+                      <Box
+                        sx={{ display: "flex", alignItems: "center", gap: 1 }}
+                      >
+                        <Tooltip
+                          title={
+                            selectedProjectId === project.id
+                              ? "Selected"
+                              : "Select project"
                           }
-                          onClick={() => setSelectedProject(project)}
                         >
-                          {selectedProject?.id === project.id
-                            ? "Selected"
-                            : "Select"}
-                        </Button>
-                        <IconButton
-                          size="small"
-                          color="error"
-                          onClick={() => handleDeleteProject(project.id)}
-                          disabled={projectsLoading}
-                        >
-                          <DeleteIcon />
-                        </IconButton>
+                          <span>
+                            <Button
+                              size="small"
+                              variant={
+                                selectedProjectId === project.id
+                                  ? "contained"
+                                  : "outlined"
+                              }
+                              onClick={() => setSelectedProject(project)}
+                            >
+                              {selectedProjectId === project.id
+                                ? "Selected"
+                                : "Select"}
+                            </Button>
+                          </span>
+                        </Tooltip>
+                        <Tooltip title="Delete project">
+                          <span>
+                            <IconButton
+                              size="small"
+                              color="error"
+                              onClick={() => handleDeleteProject(project.id)}
+                              disabled={projectsLoading}
+                            >
+                              <DeleteIcon />
+                            </IconButton>
+                          </span>
+                        </Tooltip>
                       </Box>
                     }
                   />
@@ -261,11 +286,20 @@ export default function DashboardPage() {
                     />
 
                     <Box sx={{ mt: 2 }}>
-                      <Typography variant="h6" gutterBottom>
-                        Tasks
-                      </Typography>
-                      {tasksLoading && selectedProject?.id === project.id ? (
-                        // Show skeleton loading for tasks
+                      <Box
+                        sx={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: 1,
+                          mb: 1,
+                        }}
+                      >
+                        <Typography variant="h6">Tasks</Typography>
+                        {selectedProjectId === project.id && (
+                          <Chip size="small" label="Selected" color="primary" />
+                        )}
+                      </Box>
+                      {tasksLoading && selectedProjectId === project.id ? (
                         Array.from({ length: 3 }).map((_, index) => (
                           <TaskSkeleton key={index} />
                         ))

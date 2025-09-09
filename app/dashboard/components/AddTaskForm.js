@@ -41,13 +41,13 @@ export default function AddTaskForm({ onAdd }) {
   };
 
   return (
-    <Paper sx={{ p: 2, mb: 2, bgcolor: "grey.50" }}>
+    <Paper sx={{ p: { xs: 1.5, sm: 2 }, mb: 2, bgcolor: "grey.50" }}>
       <Typography variant="h6" gutterBottom>
         Add New Task
       </Typography>
       <Box component="form" onSubmit={handleSubmit}>
-        <Grid container spacing={2} alignItems="center">
-          <Grid item xs={12} sm={5}>
+        <Grid container spacing={1.5} alignItems="center">
+          <Grid item xs={12} sm={6} md={5}>
             <TextField
               label="Task Title"
               fullWidth
@@ -63,7 +63,7 @@ export default function AddTaskForm({ onAdd }) {
               required
             />
           </Grid>
-          <Grid item xs={6} sm={2}>
+          <Grid item xs={6} sm={3} md={2}>
             <FormControl fullWidth size="small">
               <InputLabel>Status</InputLabel>
               <Select
@@ -79,7 +79,7 @@ export default function AddTaskForm({ onAdd }) {
               </Select>
             </FormControl>
           </Grid>
-          <Grid item xs={6} sm={2}>
+          <Grid item xs={6} sm={3} md={2}>
             <TextField
               label="Due Date"
               type="date"
@@ -90,7 +90,7 @@ export default function AddTaskForm({ onAdd }) {
               onChange={(e) => setDueDate(e.target.value)}
             />
           </Grid>
-          <Grid item xs={12} sm={3}>
+          <Grid item xs={12} sm={12} md={3}>
             <Button
               type="submit"
               variant="contained"

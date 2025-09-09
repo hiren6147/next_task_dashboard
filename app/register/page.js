@@ -23,7 +23,6 @@ export default function RegisterPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [displayName, setDisplayName] = useState("");
-  const [agreeToTerms, setAgreeToTerms] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -73,7 +72,7 @@ export default function RegisterPage() {
               required
               fullWidth
               id="displayName"
-              label="Display Name"
+              label="Full Name"
               name="displayName"
               autoComplete="name"
               autoFocus
@@ -103,17 +102,7 @@ export default function RegisterPage() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
-            <FormControlLabel
-              control={
-                <Checkbox
-                  value="agreeToTerms"
-                  color="primary"
-                  checked={agreeToTerms}
-                  onChange={(e) => setAgreeToTerms(e.target.checked)}
-                />
-              }
-              label="I agree to the terms and conditions"
-            />
+
             {error && (
               <Typography color="error" variant="body2" sx={{ mt: 1 }}>
                 {error}
@@ -124,7 +113,7 @@ export default function RegisterPage() {
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
-              disabled={loading || !agreeToTerms}
+              disabled={loading}
             >
               {loading ? "Creating account..." : "Sign Up"}
             </Button>

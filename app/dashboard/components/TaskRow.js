@@ -10,6 +10,7 @@ import {
   MenuItem,
   Chip,
   IconButton,
+  Tooltip,
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import {
@@ -17,7 +18,7 @@ import {
   CheckCircle as CheckCircleIcon,
   RadioButtonUnchecked as RadioButtonUncheckedIcon,
 } from "@mui/icons-material";
-import { statuses, getStatusColor } from "@/lib/utils";
+import { statuses, getStatusColor, formatDateDMY } from "@/lib/utils";
 
 export default function TaskRow({ task, onUpdate, onDelete }) {
   const [status, setStatus] = useState(task.status || "Todo");
@@ -25,7 +26,18 @@ export default function TaskRow({ task, onUpdate, onDelete }) {
   useEffect(() => setStatus(task.status || "Todo"), [task.status]);
 
   return (
-    <Paper variant="outlined" sx={{ p: 2, mb: 1 }}>
+    <Paper
+      variant="outlined"
+      sx={{
+        p: 2,
+        mb: 1,
+        transition: (theme) =>
+          theme.transitions.create(["background-color", "box-shadow"], {
+            duration: 150,
+          }),
+        "&:hover": { boxShadow: 3, backgroundColor: "grey.50" },
+      }}
+    >
       <Grid container alignItems="center" spacing={1}>
         <Grid item xs>
           <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
@@ -43,7 +55,20 @@ export default function TaskRow({ task, onUpdate, onDelete }) {
               label={task.status}
             />
             {task.dueDate && (
-              <Chip size="small" label={`Due: ${task.dueDate}`} />
+              <Chip
+                size="small"
+                label={`Due: ${formatDateDMY(task.dueDate)}`}
+                color={
+                  new Date(task.dueDate) < new Date() && task.status !== "Done"
+                    ? "error"
+                    : "default"
+                }
+                variant={
+                  new Date(task.dueDate) < new Date() && task.status !== "Done"
+                    ? "filled"
+                    : "outlined"
+                }
+              />
             )}
           </Box>
         </Grid>
@@ -67,9 +92,11 @@ export default function TaskRow({ task, onUpdate, onDelete }) {
           </FormControl>
         </Grid>
         <Grid item>
-          <IconButton color="error" onClick={onDelete}>
-            <DeleteIcon />
-          </IconButton>
+          <Tooltip title="Delete task">
+            <IconButton color="error" onClick={onDelete}>
+              <DeleteIcon />
+            </IconButton>
+          </Tooltip>
         </Grid>
       </Grid>
     </Paper>
