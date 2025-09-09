@@ -19,7 +19,6 @@ import {
   Divider,
   Skeleton,
   CircularProgress,
-  Chip,
   Tooltip,
 } from "@mui/material";
 import { Delete as DeleteIcon } from "@mui/icons-material";
@@ -69,20 +68,12 @@ export default function DashboardPage() {
     loading: projectsLoading,
     createLoading,
   } = useProjectStore();
-  const {
-    tasksByProject,
-    fetchTasks,
-    addTask,
-    updateTask,
-    deleteTask,
-    loading: tasksLoading,
-  } = useTaskStore();
+  const { tasksByProject, fetchTasks, addTask, updateTask, deleteTask } =
+    useTaskStore();
 
   const [projectName, setProjectName] = useState("");
   const [projectDesc, setProjectDesc] = useState("");
-  const [selectedProject, setSelectedProject] = useState(null);
   const [projectNameError, setProjectNameError] = useState("");
-  const selectedProjectId = selectedProject?.id ?? null;
 
   useEffect(() => {
     (async () => {
@@ -91,12 +82,16 @@ export default function DashboardPage() {
     })();
   }, [fetchMe, fetchProjects]);
 
-  // Auto-fetch tasks when a project is selected
+  // Auto-fetch tasks for all projects when projects change
   useEffect(() => {
-    if (selectedProject) {
-      fetchTasks(selectedProject.id);
+    if (projects.length > 0) {
+      projects.forEach((p) => {
+        if (tasksByProject[p.id] === undefined) {
+          fetchTasks(p.id);
+        }
+      });
     }
-  }, [selectedProject, fetchTasks]);
+  }, [projects, tasksByProject, fetchTasks]);
 
   const handleCreateProject = async (e) => {
     e.preventDefault();
@@ -123,10 +118,6 @@ export default function DashboardPage() {
       )
     ) {
       await deleteProject(projectId);
-      // If the deleted project was selected, clear the selection
-      if (selectedProject?.id === projectId) {
-        setSelectedProject(null);
-      }
     }
   };
 
@@ -200,7 +191,7 @@ export default function DashboardPage() {
         <Grid container spacing={3}>
           {projectsLoading ? (
             // Show skeleton loading for projects
-            Array.from({ length: 3 }).map((_, index) => (
+            Array.from({ length: 2 }).map((_, index) => (
               <Grid item xs={12} md={6} key={index}>
                 <ProjectSkeleton />
               </Grid>
@@ -241,29 +232,6 @@ export default function DashboardPage() {
                       <Box
                         sx={{ display: "flex", alignItems: "center", gap: 1 }}
                       >
-                        <Tooltip
-                          title={
-                            selectedProjectId === project.id
-                              ? "Selected"
-                              : "Select project"
-                          }
-                        >
-                          <span>
-                            <Button
-                              size="small"
-                              variant={
-                                selectedProjectId === project.id
-                                  ? "contained"
-                                  : "outlined"
-                              }
-                              onClick={() => setSelectedProject(project)}
-                            >
-                              {selectedProjectId === project.id
-                                ? "Selected"
-                                : "Select"}
-                            </Button>
-                          </span>
-                        </Tooltip>
                         <Tooltip title="Delete project">
                           <span>
                             <IconButton
@@ -295,11 +263,8 @@ export default function DashboardPage() {
                         }}
                       >
                         <Typography variant="h6">Tasks</Typography>
-                        {selectedProjectId === project.id && (
-                          <Chip size="small" label="Selected" color="primary" />
-                        )}
                       </Box>
-                      {tasksLoading && selectedProjectId === project.id ? (
+                      {tasksByProject[project.id] === undefined ? (
                         Array.from({ length: 3 }).map((_, index) => (
                           <TaskSkeleton key={index} />
                         ))
