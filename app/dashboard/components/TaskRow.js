@@ -38,7 +38,7 @@ export default function TaskRow({ task, onUpdate, onDelete }) {
         "&:hover": { boxShadow: 3, backgroundColor: "grey.50" },
       }}
     >
-      <Grid container alignItems="center" spacing={1}>
+      <Grid container alignItems="center" spacing={2}>
         <Grid item xs>
           <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
             {task.status === "Done" ? (
@@ -48,6 +48,8 @@ export default function TaskRow({ task, onUpdate, onDelete }) {
             )}
             <Typography variant="subtitle2">{task.title}</Typography>
           </Box>
+        </Grid>
+        <Grid item>
           <Box sx={{ display: "flex", gap: 1, mt: 0.5 }}>
             <Chip
               size="small"
