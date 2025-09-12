@@ -174,7 +174,7 @@ export default function DashboardPage() {
 
   return (
     <TooltipProvider>
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50">
         <Header />
 
         <div className="container mx-auto space-y-8 px-4 py-8">

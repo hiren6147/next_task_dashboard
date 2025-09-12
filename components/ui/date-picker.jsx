@@ -30,8 +30,6 @@ export function DatePicker({
             "border-input bg-background text-foreground",
             "hover:bg-accent hover:text-accent-foreground",
             "focus:border-primary focus:ring-primary/20 focus:ring-2",
-            "dark:border-input dark:bg-background dark:text-foreground",
-            "dark:hover:bg-accent dark:hover:text-accent-foreground",
             !date && "text-muted-foreground",
             className,
           )}
@@ -42,7 +40,7 @@ export function DatePicker({
         </Button>
       </PopoverTrigger>
       <PopoverContent
-        className="bg-popover dark:border-border w-auto border p-0 shadow-xl backdrop-blur-sm"
+        className="bg-popover w-auto border p-0 shadow-xl backdrop-blur-sm"
         align="start"
       >
         <Calendar

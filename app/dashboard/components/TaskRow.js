@@ -62,12 +62,12 @@ export default function TaskRow({ task, onUpdate, onDelete }) {
   const getStatusBadgeStyle = () => {
     switch (task.status) {
       case "Done":
-        return "bg-green-500/10 text-green-600 dark:text-green-400 border-green-500/20";
+        return "bg-green-500/10 text-green-600 border-green-500/20";
       case "In Progress":
-        return "bg-yellow-500/10 text-yellow-600 dark:text-yellow-400 border-yellow-500/20";
+        return "bg-yellow-500/10 text-yellow-600 border-yellow-500/20";
       case "Todo":
       default:
-        return "bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/20";
+        return "bg-blue-500/10 text-blue-600 border-blue-500/20";
     }
   };
 
@@ -146,7 +146,7 @@ export default function TaskRow({ task, onUpdate, onDelete }) {
                         variant={isOverdue ? "destructive" : "outline"}
                         className={`text-xs transition-all duration-200 ${
                           isOverdue
-                            ? "border-red-500/20 bg-red-500/10 text-red-600 dark:text-red-400"
+                            ? "border-red-500/20 bg-red-500/10 text-red-600"
                             : "bg-muted/50"
                         }`}
                       >
