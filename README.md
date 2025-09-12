@@ -1,12 +1,12 @@
 ## Next Task Dashboard
 
-A task and project management dashboard built with Next.js App Router, Firebase Auth (via Identity Toolkit), and Firestore (via Firebase Admin SDK). Sessions are managed with secure HttpOnly cookies. UI is styled with Material UI and theming is set up with Emotion.
+A task and project management dashboard built with Next.js App Router, Firebase Auth (via Identity Toolkit), and Firestore (via Firebase Admin SDK). Sessions are managed with secure HttpOnly cookies. UI is styled with Shadcn UI.
 
 ### Tech stack
 
 - **Next.js 15** (App Router, Node runtime)
 - **React 19**
-- **Material UI 7** with **Emotion**
+- **Shadcn UI**
 - **Zustand** for client state
 - **Firebase Admin SDK** (Auth + Firestore)
 - **cookie** and HttpOnly session cookies
