@@ -1,15 +1,11 @@
 "use client";
-import { ThemeProvider, CssBaseline } from "@mui/material";
-import theme from "./theme";
-import MuiRegistry from "./MuiRegistry";
+
+import { ThemeProvider } from "@/lib/theme-provider";
 
 export default function Providers({ children }) {
   return (
-    <MuiRegistry>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        {children}
-      </ThemeProvider>
-    </MuiRegistry>
+    <ThemeProvider defaultTheme="system" storageKey="next-task-dashboard-theme">
+      {children}
+    </ThemeProvider>
   );
 }

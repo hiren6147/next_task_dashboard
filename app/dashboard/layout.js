@@ -7,5 +7,5 @@ export default async function DashboardLayout({ children }) {
   const sessionCookie = cookieStore.get(getSessionCookieName())?.value;
   const decoded = await verifySessionCookie(sessionCookie);
   if (!decoded) redirect("/login");
-  return <div className="min-h-screen p-4">{children}</div>;
+  return <>{children}</>;
 }
