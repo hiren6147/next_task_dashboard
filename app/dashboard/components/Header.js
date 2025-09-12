@@ -1,9 +1,18 @@
 "use client";
 import { useAuthStore } from "@/store/useAuthStore";
 import { useMemo, useState } from "react";
-import { LogOut, User, Menu } from "lucide-react";
+import {
+  LogOut,
+  User,
+  Menu,
+  X,
+  Home,
+  FolderOpen,
+  Settings,
+  HelpCircle,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -35,89 +44,145 @@ export default function Header() {
 
   return (
     <TooltipProvider>
-      <header className="bg-background/95 supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50 w-full shadow-lg backdrop-blur">
+      <header className="bg-background/80 supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50 w-full border-b backdrop-blur-lg">
         <div className="container mx-auto px-4">
           <div className="flex h-16 items-center justify-between">
+            {/* Logo and Brand */}
             <div className="flex items-center space-x-4">
-              <div className="flex items-center space-x-2">
-                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-r from-blue-600 to-purple-600">
-                  <span className="text-sm font-bold text-white">TM</span>
+              <button
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                className="hover:bg-accent rounded-lg p-2 transition-colors md:hidden"
+              >
+                {isMobileMenuOpen ? (
+                  <X className="h-5 w-5" />
+                ) : (
+                  <Menu className="h-5 w-5" />
+                )}
+              </button>
+
+              <div className="flex items-center space-x-3">
+                <div className="bg-primary/10 animate-in zoom-in flex h-9 w-9 items-center justify-center rounded-lg duration-500">
+                  <span className="gradient-text text-sm font-bold">TM</span>
                 </div>
-                <h1 className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-xl font-bold text-transparent">
-                  Task Manager
-                </h1>
+                <div>
+                  <h1 className="hidden text-lg font-semibold md:block">
+                    Task Manager
+                  </h1>
+                </div>
               </div>
+
+              {/* Desktop Navigation */}
+              <nav className="ml-6 hidden items-center space-x-1 md:flex">
+                <Button variant="ghost" size="sm" className="hover-lift">
+                  <Home className="mr-2 h-4 w-4" />
+                  Dashboard
+                </Button>
+                {/* <Button variant="ghost" size="sm" className="hover-lift">
+                  <FolderOpen className="mr-2 h-4 w-4" />
+                  Projects
+                </Button> */}
+              </nav>
             </div>
 
-            <div className="flex items-center space-x-4">
-              {/* Desktop View */}
-              <div className="hidden items-center space-x-4 md:flex">
-                <span className="text-muted-foreground text-sm">
-                  Hi, {displayName}
-                </span>
-                <ThemeToggle />
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={logout}
-                  className="text-red-500 transition-colors duration-200 hover:bg-red-50 hover:text-red-600"
-                >
-                  <LogOut className="mr-2 h-4 w-4" />
-                  Logout
-                </Button>
-              </div>
+            {/* Right Section */}
+            <div className="flex items-center space-x-3">
+              {/* <ThemeToggle /> */}
 
-              {/* Mobile View */}
-              <div className="md:hidden">
-                <DropdownMenu
-                  open={isMobileMenuOpen}
-                  onOpenChange={setIsMobileMenuOpen}
+              {/* User Menu */}
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    className="hover-lift relative h-9 w-9 rounded-full"
+                  >
+                    <Avatar className="h-9 w-9">
+                      <AvatarImage src={user?.photoURL} alt={displayName} />
+                      <AvatarFallback className="bg-primary/10 text-primary font-semibold">
+                        {avatarLabel}
+                      </AvatarFallback>
+                    </Avatar>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent
+                  className="glass w-56"
+                  align="end"
+                  forceMount
                 >
-                  <DropdownMenuTrigger asChild>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="relative h-8 w-8 rounded-full"
-                    >
-                      <Avatar className="h-8 w-8">
-                        <AvatarFallback className="bg-gradient-to-r from-blue-600 to-purple-600 text-sm font-medium text-white">
-                          {avatarLabel}
-                        </AvatarFallback>
-                      </Avatar>
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent className="w-56" align="end" forceMount>
-                    <DropdownMenuLabel className="font-normal">
-                      <div className="flex flex-col space-y-1">
-                        <p className="text-sm leading-none font-medium">
-                          {displayName}
-                        </p>
-                        <p className="text-muted-foreground text-xs leading-none">
-                          {user?.email}
-                        </p>
-                      </div>
-                    </DropdownMenuLabel>
-                    <DropdownMenuSeparator />
-                    <div className="flex items-center justify-between px-2 py-1.5">
-                      <span className="text-muted-foreground text-sm">
-                        Theme
-                      </span>
-                      <ThemeToggle />
+                  <DropdownMenuLabel className="font-normal">
+                    <div className="flex flex-col space-y-1">
+                      <p className="text-sm leading-none font-medium">
+                        {displayName}
+                      </p>
+                      <p className="text-muted-foreground text-xs leading-none">
+                        {user?.email}
+                      </p>
                     </div>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem
-                      onClick={logout}
-                      className="text-red-500 focus:bg-red-50 focus:text-red-600"
-                    >
-                      <LogOut className="mr-2 h-4 w-4" />
-                      <span>Log out</span>
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </div>
+                  </DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  {/* <DropdownMenuItem className="hover-lift cursor-pointer">
+                    <User className="mr-2 h-4 w-4" />
+                    <span>Profile</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem className="hover-lift cursor-pointer">
+                    <Settings className="mr-2 h-4 w-4" />
+                    <span>Settings</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem className="hover-lift cursor-pointer">
+                    <HelpCircle className="mr-2 h-4 w-4" />
+                    <span>Help & Support</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator /> */}
+                  <DropdownMenuItem
+                    onClick={logout}
+                    className="text-destructive focus:bg-destructive/10 focus:text-destructive hover-lift cursor-pointer"
+                  >
+                    <LogOut className="mr-2 h-4 w-4" />
+                    <span>Log out</span>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             </div>
           </div>
         </div>
+
+        {/* Mobile Navigation Menu */}
+        {isMobileMenuOpen && (
+          <div className="bg-background/95 animate-in slide-in-from-top border-t backdrop-blur-lg duration-200 md:hidden">
+            <nav className="container mx-auto space-y-2 px-4 py-4">
+              <Button
+                variant="ghost"
+                className="hover-lift w-full justify-start"
+              >
+                <Home className="mr-2 h-4 w-4" />
+                Dashboard
+              </Button>
+              <Button
+                variant="ghost"
+                className="hover-lift w-full justify-start"
+              >
+                <FolderOpen className="mr-2 h-4 w-4" />
+                Projects
+              </Button>
+              <Button
+                variant="ghost"
+                className="hover-lift w-full justify-start"
+              >
+                <Settings className="mr-2 h-4 w-4" />
+                Settings
+              </Button>
+              <div className="border-t pt-2">
+                <Button
+                  variant="ghost"
+                  onClick={logout}
+                  className="text-destructive hover:bg-destructive/10 hover-lift w-full justify-start"
+                >
+                  <LogOut className="mr-2 h-4 w-4" />
+                  Log out
+                </Button>
+              </div>
+            </nav>
+          </div>
+        )}
       </header>
     </TooltipProvider>
   );
