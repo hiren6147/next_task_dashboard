@@ -27,7 +27,6 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { ThemeToggle } from "@/components/ui/theme-toggle";
 
 export default function Header() {
   const { user, logout } = useAuthStore();
